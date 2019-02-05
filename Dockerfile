@@ -2,19 +2,29 @@ FROM jenkinsxio/builder-maven:latest
 
 RUN lsb_release -a 
 
-RUN jx --version
 
-# Install Fedora EPEL YUM repo
-#RUN rpm -i "https://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+RUN localedef -i fr_FR -c -f UTF-8 -A /usr/share/locale/locale.alias fr_FR.UTF-8
+ENV LANG fr_FR.utf8
 
-# Install the PIP Python package manager
-RUN yum -y install python-pip && yum clean all
+# gcc because we need regex and pyldap
+# openldap-devel because we need pyldap
+RUN yum update -y \
+    && yum install -y https://centos7.iuscommunity.org/ius-release.rpm \
+    && yum install -y python36u python36u-libs python36u-devel python36u-pip \
+    && yum install -y which gcc \ 
+    && yum install -y openldap-devel  
 
-# Install AWS Command Line Interface
-RUN pip install awscli
+# pipenv installation
+RUN pip3.6 install pipenv
+RUN rm -rf /bin/pip 
+RUN ln -s /usr/bin/pip3.6 /bin/pip
+RUN rm /usr/bin/python
+# python must be pointing to python3.6
+RUN ln -s /usr/bin/python3.6 /usr/bin/python
 
-COPY .m2 /root/.m2
+RUN pip install --upgrade pip
 
-RUN aws --version
-
-
+WORKDIR /opt/intranet
+ENV SLUGIFY_USES_TEXT_UNIDECODE=yes
+ADD requirements.txt /root/requirements.txt 
+RUN /bin/pip install -r /root/requirements.txt 
