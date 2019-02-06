@@ -9,8 +9,8 @@
     <servers>
         <server>
             <id>dl-repo-bucket-snapshot</id>
-            <username>$AWS_KEY</username>
-            <password>$AWS_PASS</password>
+            <username>${env.AWS_KEY}</username>
+            <password>${env.AWS_PASS}</password>
         </server>
         <server>
             <id>dl-repo-bucket-release</id>
