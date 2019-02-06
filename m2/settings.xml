@@ -1,0 +1,21 @@
+<settings>
+    <mirrors>
+        <mirror>
+            <id>nexus</id>
+            <mirrorOf>external:*</mirrorOf>
+            <url>http://nexus/repository/maven-group/</url>
+        </mirror>
+    </mirrors>
+    <servers>
+        <server>
+            <id>dl-repo-bucket-snapshot</id>
+            <username>$AWS_KEY</username>
+            <password>$AWS_PASS</password>
+        </server>
+        <server>
+            <id>dl-repo-bucket-release</id>
+            <username>$AWS_KEY</username>
+            <password>$AWS_PASS</password>
+        </server>
+    </servers>
+</settings>

@@ -28,3 +28,9 @@ WORKDIR /opt/intranet
 ENV SLUGIFY_USES_TEXT_UNIDECODE=yes
 ADD requirements.txt /root/requirements.txt 
 RUN /bin/pip install -r /root/requirements.txt 
+
+COPY m2 /root/.m2
+
+RUN aws --version
+
+
